@@ -155,7 +155,7 @@ enum ExportAddressTestValue {
 impl<'a,'b> ::std::cmp::PartialEq<ExportAddress<'a>> for &'b ExportAddressTestValue {
 	fn eq(&self, other: &ExportAddress) -> bool {
 		use self::ExportAddressTestValue as EAT;
-		use ExportAddress as EA;
+		use crate::ExportAddress as EA;
 		match (self,other) {
 			(&&EAT::Export(a),&EA::Export(rva)) if a==rva.get() => true,
 			(&&EAT::Forwarder(a),&EA::Forwarder(rva)) if a==rva.get() => true,
@@ -191,7 +191,7 @@ fn list_exports() {
 		0x12c1, 0x12d5, 0x12a8, 0xe8488, 0x1384, 0x1474,   0x130c,   0x1488, 0x1294, 0x1177,
 		0x12d0, 0x14f6, 0x146a, 0x162c,  0x1154, 0x15c8,   0x14bf,   0x111d, 0x15e6, 0x1285,
 		0x1122,
-	].into_iter().map(|&i|ExportAddressTestValue::Export(i)).collect();
+	].iter().map(|&i|ExportAddressTestValue::Export(i)).collect();
 	let sqlite_x64_exports: Vec<_>=[
 		0x124e, 0x143d, 0x1032, 0x119f,   0x130c, 0x1208,   0x1267,   0x12e9, 0x1276, 0x12cb,
 		0x1339, 0x10eb, 0x14ec, 0x1249,   0x1433, 0x1573,   0x1159,   0x12b2, 0x1361, 0x1366,
@@ -217,7 +217,7 @@ fn list_exports() {
 		0x157d, 0x1578, 0x1348, 0x1228ac, 0x10e1, 0x1550,   0x1564,   0x1131, 0x1280, 0x14b0,
 		0x1069, 0x102d, 0x14f6, 0x149c,   0x131b, 0x1154,   0x1302,   0x1442, 0x10e6, 0x103c,
 		0x123a,
-	].into_iter().map(|&i|ExportAddressTestValue::Export(i)).collect();
+	].iter().map(|&i|ExportAddressTestValue::Export(i)).collect();
 
 	let edir=SQLITE_X86_PE.get_exports().unwrap();
 	let exports=edir.get_export_addresses().unwrap().iter().map(|rawea|edir.concretize_export_address(rawea));
